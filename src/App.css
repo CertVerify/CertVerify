@@ -196,3 +196,81 @@ body{
   padding-right: 5vw;
   justify-content: center;
 }
+
+.gentext{
+  margin-top: 2%;
+}
+
+
+.Nameinput{
+  width: 26%;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  background-color: #efefef;
+  
+}
+
+.flexit{
+  display: flex;
+}
+
+.namename{
+  color: #999999;
+  font-size: 13;
+  font-family: 'Poppins';
+  font-weight: '500';
+  word-wrap: 'break-word';
+  margin-bottom: 1%;
+}
+
+.dategen{
+  margin-top: 3%;
+  margin-bottom: 6%;
+}
+
+.GenText1{
+  display: flex;
+  height: 8vh;
+  padding-top: 4%;
+  padding-left: 4.65%;
+}
+
+.flexset{
+  flex: 13%;
+}
+.flexset2{
+  flex: 87%;
+}
+
+.datedate{
+  padding-left: 4px;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  background-color: #efefef;
+}
+
+.marksmarks{
+  background-color: #efefef;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+
+}
+
+.marginset{
+  margin-bottom: 0;
+}
+
+.Create{
+  background-image: url('./images/Create.svg');
+  background-size: cover;
+  border: none;
+  border-radius: 16px;
+  border-color: white;
+  padding: 0;
+  margin-left: 18%;
+  height: 6vw;
+  width: 14%;
+}
