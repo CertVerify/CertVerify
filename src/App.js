@@ -9,15 +9,17 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
+import Register from './Components/register';
 
 function App() {
   return (
     <div className="App">
         <Routes>
-          <Route path="/" element = {<Sidebar />}  />
+          <Route path="/" element = {<Register />}  />
           <Route path="/Admin" element = {<Home_Admin />}  />
           <Route path="/Admin_Connected" element = {<Home_Admin_1 />}  />
           <Route path="/Create_Certificate" element = {<CreateCertficate />}  />
+
         </Routes>
     </div>
   );
