@@ -85,7 +85,7 @@
 //             },
 //         });
 
-//         const pinataURL = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
+//         const pinataURL = https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash};
 //         return res.json({ success: true, pinataURL });
 //     } catch (error) {
 //         console.error(error);
@@ -94,13 +94,17 @@
 // });
 
 // app.listen(port, () => {
-//     console.log(`Server is running on port ${port}`);
+//     console.log(Server is running on port ${port});
 // });
+
+
 
 
 const express = require('express');
 const axios = require('axios');
+const Jimp = require("jimp");
 const bodyParser = require('body-parser');
+const multer = require('multer');
 
 const app = express();
 const port = 3000;
@@ -117,7 +121,6 @@ app.post('/upload', async (req, res) => {
 
         const pinataUrl = 'https://api.pinata.cloud/pinning/pinJSONToIPFS';
 
-        // Set headers with API key and secret
         const headers = {
             'Content-Type': 'application/json',
             'pinata_api_key': apiKey,
@@ -143,6 +146,134 @@ app.post('/upload', async (req, res) => {
     }
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+// const storage = multer.memoryStorage();
+// const upload = multer({ storage: storage });
+
+// app.post('/uploadImage', upload.single('image'), async (req, res) => {
+//     try {
+//         const { apiKey, apiSecret } = req.body;
+
+//         if (!apiKey || !apiSecret || !req.file) {
+//             return res.status(400).json({ error: 'Missing required parameters' });
+//         }
+
+//         const pinataUrl = 'https://api.pinata.cloud/pinning/pinFileToIPFS';
+
+//         const headers = {
+//             'Content-Type': 'application/json',
+//             'pinata_api_key': apiKey,
+//             'pinata_secret_api_key': apiSecret,
+//         };
+
+//         const formData = new FormData();
+//         formData.append('file', req.file.buffer, { filename: req.file.originalname });
+
+//         const response = await axios.post(pinataUrl, formData, { headers });
+
+//         const pinataUrlPrefix = 'https://gateway.pinata.cloud/ipfs/';
+//         const pinataIpfsHash = response.data.IpfsHash;
+//         const pinataImageUrl = pinataUrlPrefix + pinataIpfsHash;
+
+//         res.json({ pinataUrl: pinataImageUrl });
+//     } catch (error) {
+
+//         console.error('Error:', error.response ? error.response.data : error.message);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// });
+
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+app.post('/uploadImage', upload.single('image'), async (req, res) => {
+    try {
+        const { apiKey, apiSecret } = req.body;
+
+        if (!apiKey || !apiSecret || !req.file) {
+            return res.status(400).json({ error: 'Missing required parameters' });
+        }
+
+        const pinataUrl = 'https://api.pinata.cloud/pinning/pinFileToIPFS';
+
+        const headers = {
+            'Content-Type': 'multipart/form-data',
+            'pinata_api_key': apiKey,
+            'pinata_secret_api_key': apiSecret,
+        };
+
+        const formData = new FormData();
+        formData.append('file', req.file.buffer, { filename: req.file.originalname });
+
+        const response = await axios.post(pinataUrl, formData, { headers });
+
+        const pinataUrlPrefix = 'https://gateway.pinata.cloud/ipfs/';
+        const pinataIpfsHash = response.data.IpfsHash;
+        const pinataImageUrl = pinataUrlPrefix + pinataIpfsHash;
+
+        res.json({ pinataUrl: pinataImageUrl });
+    } catch (error) {
+        console.error('Error:', error.response ? error.response.data : error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
+
+///////////////////////////////////////////
+
+
+
+app.post("/generateCertificate", upload.fields([{ name: "testImage", maxCount: 1 }, { name: "signatureImage", maxCount: 1 }]), async (req, res) => {
+    try {
+        const testImageBuffer = req.files["testImage"][0].buffer;
+        const signatureImageBuffer = req.files["signatureImage"][0].buffer;
+
+        const image = await Jimp.read(testImageBuffer);
+        const sign = await Jimp.read(signatureImageBuffer);
+
+        const font = await Jimp.loadFont(Jimp.FONT_SANS_64_BLACK);
+        image.print(font, 835, 600, req.body.title || 'VALHALLA');
+        image.print(font, 420, 1030, req.body.date || '20.12.2023');
+
+        sign.resize(300, 150);
+        image.blit(sign, 1280, 980);
+
+        const certificateBuffer = await image.getBufferAsync(Jimp.MIME_PNG);
+        res.type('png').send(certificateBuffer);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+
+
+
+
 app.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`);
+    console.log('Server is running at http://localhost:${port}');
 });
