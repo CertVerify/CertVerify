@@ -1,5 +1,7 @@
 import React from 'react'
 import Sidebar from './Sidebar'
+import {ReactComponent as Error} from '../images/Error.svg'
+import {ReactComponent as ErrorText} from '../images/errortext.svg'
 
 function Home_Admin() {
   return (
@@ -7,11 +9,13 @@ function Home_Admin() {
             <Sidebar />
             <div className='test' >
                 <div className='PortalText1 textft'>
+                        <div className='Admin_Text'>
                         Admin Portal
-                        <button className='GenButton'>Connect to MetaMask</button>
-                </div>
-                <div className='PortalText2'>
-                    Welcome, Rakesh! 👋 
+                        <div className='PortalText2'>Welcome, Rakesh! 👋 </div>
+                        </div>
+                        <div className='Admin_Button'>
+                        <button className='GenButton'></button>
+                        </div>
                 </div>
                 <div className='PortalText3 textft'>
                     Generated Certificates
@@ -21,6 +25,12 @@ function Home_Admin() {
                     <option value="2">2022</option>
                     <option value="3">2021</option>
                     </select>
+                </div>
+                <div className='ErrorSign'>
+                    <Error />
+                </div>
+                <div className='ErrorSign Errortext'>
+                    <ErrorText />
                 </div>
             </div>
         </div>
