@@ -102,13 +102,17 @@
 
 const express = require('express');
 const axios = require('axios');
+const cors = require('cors');
 const Jimp = require("jimp");
 const bodyParser = require('body-parser');
 const multer = require('multer');
 
 const app = express();
-const port = 3000;
+const port = 5000;
 
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.post('/upload', async (req, res) => {
@@ -247,30 +251,28 @@ app.post('/uploadImage', upload.single('image'), async (req, res) => {
 
 
 
-app.post("/generateCertificate", upload.fields([{ name: "testImage", maxCount: 1 }, { name: "signatureImage", maxCount: 1 }]), async (req, res) => {
+app.post("/generateCertificate", async (req, res) => {
     try {
-        const testImageBuffer = req.files["testImage"][0].buffer;
-        const signatureImageBuffer = req.files["signatureImage"][0].buffer;
+        const {name , dob, marks, img} = req.body;
 
-        const image = await Jimp.read(testImageBuffer);
-        const sign = await Jimp.read(signatureImageBuffer);
+        const image = await Jimp.read("./test.jpg");
+        // const sign = await Jimp.read(img);
 
         const font = await Jimp.loadFont(Jimp.FONT_SANS_64_BLACK);
-        image.print(font, 835, 600, req.body.title || 'VALHALLA');
-        image.print(font, 420, 1030, req.body.date || '20.12.2023');
+        image.print(font, 835, 600, name || 'VALHALLA');
+        image.print(font, 420, 1030, dob || '20.12.2023');
 
-        sign.resize(300, 150);
-        image.blit(sign, 1280, 980);
+        // sign.resize(300, 150);
+        // image.blit(sign, 1280, 980);
 
         const certificateBuffer = await image.getBufferAsync(Jimp.MIME_PNG);
-        res.type('png').send(certificateBuffer);
+        // res.type('png').send(certificateBuffer);
+        res.json({ success: true, certificate: certificateBuffer.toString('base64') });
     } catch (error) {
         console.error(error);
         res.status(500).send("Internal Server Error");
     }
 });
-
-
 
 
 
