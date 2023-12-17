@@ -49,7 +49,22 @@ function CreateCertficate() {
     const responseDATA = await response.json();
       console.log(responseDATA);
     console.log(user);
+    displayCertificate(responseDATA.certificate);
   };
+
+  function displayCertificate(certificateBase64) {
+    const certificateContainer = document.getElementById('certificateContainer');
+    
+    // Create an img element
+    const imgElement = document.createElement('img');
+    
+    // Set the source of the image to the base64 data
+    imgElement.src = 'data:image/png;base64,' + certificateBase64;
+
+    // Append the image element to the container
+    certificateContainer.appendChild(imgElement);
+
+}
   
   return (
     <div className='Home_Admin'>
@@ -92,6 +107,7 @@ function CreateCertficate() {
             <div className='Buttondiv'>
               <button type='Submit' className='Create'></button>
             </div>
+            <div id="certificateContainer"></div>
         </form>
     </div>
 
