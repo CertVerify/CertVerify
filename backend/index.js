@@ -211,59 +211,72 @@ app.post('/upload', async (req, res) => {
 
 
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+const upload1 = multer({ storage: storage });
 
-app.post('/uploadImage', upload.single('image'), async (req, res) => {
-    try {
+app.post('/uploadImage', upload1.single('image'), async (req, res) => {
+        try {
         const { apiKey, apiSecret } = req.body;
 
         if (!apiKey || !apiSecret || !req.file) {
-            return res.status(400).json({ error: 'Missing required parameters' });
-        }
+                return res.status(400).json({ error: 'Missing required parameters' });
+            }
+    
+            const pinataUrl = 'https://api.pinata.cloud/pinning/pinFileToIPFS';
+    
+            const headers = {
+                    'Content-Type': 'multipart/form-data',
+                    'pinata_api_key': apiKey,
+                    'pinata_secret_api_key': apiSecret,
+                };
+        
+                const formData = new FormData();
+                formData.append('file', req.file.buffer, { filename: req.file.originalname });
+        
+                const response = await axios.post(pinataUrl, formData, { headers });
+        
+                const pinataUrlPrefix = 'https://gateway.pinata.cloud/ipfs/';
+                const pinataIpfsHash = response.data.IpfsHash;
+                const pinataImageUrl = pinataUrlPrefix + pinataIpfsHash;
+        
+                res.json({ pinataUrl: pinataImageUrl });
+            } catch (error) {
+                    console.error('Error:', error.response ? error.response.data : error.message);
+                    res.status(500).json({ error: 'Internal Server Error' });
+                }
+            });
+            
+            
+            
+            ///////////////////////////////////////////
+            
+            
+            const upload = multer({ storage: storage }).array('img', 2);
+            
+            app.post("/generateCertificate",upload, async (req, res) => {
+                try {
+        const {name , dob, phy_marks, maths_marks, chem_marks, socio_marks, date} = req.body;
 
-        const pinataUrl = 'https://api.pinata.cloud/pinning/pinFileToIPFS';
+        const image = await Jimp.read("./Marksheet.png");
+        const sign = await Jimp.read(req.files[0].buffer);
+        const photo = await Jimp.read(req.files[1].buffer);
 
-        const headers = {
-            'Content-Type': 'multipart/form-data',
-            'pinata_api_key': apiKey,
-            'pinata_secret_api_key': apiSecret,
-        };
-
-        const formData = new FormData();
-        formData.append('file', req.file.buffer, { filename: req.file.originalname });
-
-        const response = await axios.post(pinataUrl, formData, { headers });
-
-        const pinataUrlPrefix = 'https://gateway.pinata.cloud/ipfs/';
-        const pinataIpfsHash = response.data.IpfsHash;
-        const pinataImageUrl = pinataUrlPrefix + pinataIpfsHash;
-
-        res.json({ pinataUrl: pinataImageUrl });
-    } catch (error) {
-        console.error('Error:', error.response ? error.response.data : error.message);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
-
-
-
-///////////////////////////////////////////
-
-
-
-app.post("/generateCertificate", async (req, res) => {
-    try {
-        const {name , dob, marks, img} = req.body;
-
-        const image = await Jimp.read("./test.jpg");
-        // const sign = await Jimp.read(img);
-
-        const font = await Jimp.loadFont(Jimp.FONT_SANS_64_BLACK);
-        image.print(font, 835, 600, name || 'VALHALLA');
-        image.print(font, 420, 1030, dob || '20.12.2023');
+        const font1 = await Jimp.loadFont(Jimp.FONT_SANS_8_BLACK);
+        const font2 = await Jimp.loadFont(Jimp.FONT_SANS_12_BLACK);
+        image.print(font1,105,164, name);
+        image.print(font1,133,179, dob);
+        image.print(font1,110,439, date);
+        image.print(font2,233,271, maths_marks);
+        image.print(font2,233,302, socio_marks);
+        image.print(font2,233,332, chem_marks);
+        image.print(font2,233,363, phy_marks);
 
         // sign.resize(300, 150);
         // image.blit(sign, 1280, 980);
+
+        sign.resize(80,50);
+        photo.resize(80,80);
+        image.blit(photo, 428, 80);
+        image.blit(sign, 413, 520);
 
         const certificateBuffer = await image.getBufferAsync(Jimp.MIME_PNG);
         // res.type('png').send(certificateBuffer);
