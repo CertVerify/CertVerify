@@ -23,11 +23,15 @@ function CreateCertficate() {
 		const name = e.target.name;
 		const value = e.target.value;
 
-		if (name in ["photo", "qr", "sign"] && e.target.files.length) {
-			setUser((prev) => ({
-				...prev,
-				[name]: e.target.files[0],
-			}));
+		if ((name == "photo" || name == "qr" || name == "sign") && e.target.files.length) {
+			let reader = new FileReader();
+			reader.readAsDataURL(e.target.files[0]);
+			reader.onload = () => {
+				setUser((prev) => ({
+					...prev,
+					[name]: reader.result,
+				}));
+			};
 		} else {
 			setUser((prev) => ({
 				...prev,
@@ -40,20 +44,15 @@ function CreateCertficate() {
 		e.preventDefault();
 		// console.log(name);
 
-		const form_send = new FormData();
-		form_send.append("name", user.name);
-		form_send.append("dob", user.dob);
-		form_send.append("marks0", user.marks0);
-		form_send.append("marks1", user.marks1);
-		form_send.append("marks2", user.marks2);
-		form_send.append("marks3", user.marks3);
-		form_send.append("qr", user.qr);
-		form_send.append("photo", user.photo);
-		form_send.append("sign", user.sign);
-		console.log(form_send.getAll("sign"));
+		const form_send = { name: user.name, dob: user.dob, marks0: user.marks0, marks1: user.marks1, marks2: user.marks2, marks3: user.marks3, qr: user.qr, photo: user.photo, sign: user.sign };
+		console.log(form_send);
 		const response = await fetch("http://localhost:5000/generateCertificate", {
 			method: "POST",
-			body: form_send,
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(form_send),
 		});
 		const responseDATA = await response.json();
 		console.log(responseDATA);
@@ -112,17 +111,17 @@ function CreateCertficate() {
 				<div className="flexset2">
 					<div className="namename">Photo</div>
 					<GenIcon />
-					<input type="file" name="photo" onChange={handleChange} />
+					<input type="file" name="photo" id="photo" onChange={handleChange} />
 				</div>
 				<div className="flexset2">
 					<div className="namename">QR</div>
 					<DateIcon />
-					<input type="file" name="qr" onChange={handleChange} />
+					<input type="file" name="qr" id="qr" onChange={handleChange} />
 				</div>
 				<div className="flexset2">
 					<div className="namename">Sign</div>
 					<MarksIcon />
-					<input type="file" name="sign" onChange={handleChange} />
+					<input type="file" name="sign" id="sign" onChange={handleChange} />
 				</div>
 				<div className="Buttondiv">
 					<button type="Submit" className="Create"></button>
