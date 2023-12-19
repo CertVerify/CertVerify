@@ -1,0 +1,45 @@
+.Sidebar {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 20vw;
+	font-family: 'Poppins', Helvetica;
+}
+
+.Sidebar>svg {
+	margin-top: 20px;
+	margin-left: 35px;
+}
+
+.SidebarList {
+	height: auto;
+	padding: 0;
+	width: 100%;
+}
+
+.elemnt {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	/* gap: 30px; */
+	height: 40px;
+	margin: 20px 0;
+}
+
+.elemnt #hov {
+	opacity: 0;
+}
+
+.elemnt:hover #hov {
+	opacity: 1;
+}
+
+#icon {
+	height: 20px;
+	margin-left: 28px;
+	margin-right: 17px;
+}
+
+.blue path {
+	fill: #0C21C1;
+}
