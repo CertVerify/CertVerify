@@ -1,0 +1,154 @@
+.login {
+    background: #fff;
+    height: 100vh;
+    height: 100svh;
+    width: 100%;
+    padding: 20px 35px;
+}
+
+.logo {
+    color: #000;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.mainContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 90%;
+    width: 100%;
+}
+
+.leftFrame {
+    display: flex;
+    height: 85%;
+    width: 45%;
+    justify-content: center;
+    align-items: center;
+
+	@media screen and (max-width: 767.5px) {
+		width: 100%;
+	}
+}
+
+.rightFrame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5%;
+    background: #000842;
+    height: 100%;
+    width: 55%;
+    border-radius: 15px;
+
+	@media screen and (max-width: 767.5px) {
+		display: none;
+	}
+}
+
+/* Left Frame Begins */
+
+.leftFrame .title {
+    color: #000;
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.leftFrame .leftBox {
+    display: inline-flex;
+	min-width: 300px;
+    flex-direction: column;
+    align-items: center;
+    gap: 35px;
+}
+
+.leftBox .text {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.leftBox .text a {
+    color: #0c21c1;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.leftBox .mobileNumber {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mobileNumber > * {
+    display: flex;
+    align-items: center;
+}
+
+.mobileNumber .label {
+    color: #999;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.mobileNumber .input {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.mobileNumber .input > input {
+    width: 100%;
+    color: #000842;
+    font-size: 16px;
+    font-weight: 400;
+    border: none;
+    outline: none;
+}
+
+.leftBox .loginButton {
+    color: white;
+    display: flex;
+    width: 100%;
+    padding: 10px;
+	margin-top: 25px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 32px;
+    background: #0c21c1;
+    box-shadow: 0px 4px 26px 0px rgba(0, 0, 0, 0.25);
+	border: none;
+}
+
+/* Left Frame Ends */
+/* Right Frame Begins */
+
+.rightFrame .heroImage {
+    max-height: 75%;
+    max-width: 100%;
+}
+
+.rightFrame .description {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	width: 100%;
+}
+
+.rightFrame h3 {
+    color: #fff;
+    width: 100%;
+    font-size: max(25px, 2.5vw);
+    font-weight: 600;
+}
+
+.rightFrame p {
+    color: #fff;
+    width: 100%;
+    font-size: 18px;
+    font-weight: 300;
+}
+
+/* Right Frame Ends */

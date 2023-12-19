@@ -22,7 +22,7 @@ function Home_Admin() {
     await window.ethereum.request({ method: 'eth_requestAccounts' }).then(() => {
       console.log('here');
       getAddress();
-      window.location.reload();
+      window.location.href = "/Admin_Connected";
     });
   }
 
@@ -52,7 +52,7 @@ function Home_Admin() {
           </div>
           <div className="Admin_Button">
             <button onClick={connectWebsite} style={{backgroundColor: "#0CC18B"}}>
-              {connected ? 'Connected' : 'Connect Wallet'}
+              {connected ? 'Connected' : 'Connect to Metamask'}
             </button>
           </div>
         </div>

@@ -9,7 +9,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import Register from './Components/register';
+import Register from './Components/AdminLogin';
 
 function App() {
   return (

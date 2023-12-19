@@ -89,7 +89,7 @@ body{
 .textft{
   color: #000842;
   font-size: 28px;
-  font-family: Poppins;
+  font-family: "Poppins-SemiBold", Helvetica;
   font-weight: 600;
   word-wrap: break-word
 }
@@ -105,7 +105,7 @@ body{
 .PortalText2{
   color: #757897;
   font-size: 24px;
-  font-family: Poppins;
+  font-family: "Poppins-SemiBold", Helvetica;
   font-weight: 500;
   word-wrap: break-word
 }
@@ -143,6 +143,7 @@ body{
 	align-items: center;
 	width: fit-content;
 	height: fit-content;
+  margin-right: 20px;
 	padding: 20px;
 	border: none;
 	outline: none;
@@ -152,7 +153,7 @@ body{
 
 	text-wrap: nowrap;
 	color: #FFF;
-	font-family: Poppins;
+  font-family: "Poppins-SemiBold", Helvetica;
 	font-size: 15px;
 	font-weight: 500;
 }
@@ -204,7 +205,7 @@ body{
 .namename{
   color: #999999;
   font-size: 13;
-  font-family: 'Poppins';
+  font-family: "Poppins-SemiBold", Helvetica;
   font-weight: '500';
   word-wrap: 'break-word';
   margin-bottom: 1%;
