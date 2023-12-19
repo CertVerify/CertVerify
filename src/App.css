@@ -96,6 +96,8 @@ body{
 
 .PortalText1{
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   height: 10vh;
   padding-top: 4%;
   padding-left: 4.65%;
@@ -115,17 +117,6 @@ body{
   font-weight: 500;
 }
 
-.GenButton{
-  background-image: url('./images/ConnectButton.svg');
-  background-size: cover;
-  border: none;
-  margin-left: 50%;
-  margin-right: 3%;
-  height: 100%;
-  width: 42%;
-  
-}
-
 .SelectButton{
   margin-left: 63%;
   color: #667085;
@@ -139,11 +130,31 @@ body{
   height: 150%;
   border-radius: 12px;
 }
-.Admin_Text{
-  flex: 30%;
-}
+
 .Admin_Button{
-  flex: 30%;
+  display: flex;
+  width: fit-content;
+  gap: 20px;
+}
+
+.Admin_Button > * {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	width: fit-content;
+	height: fit-content;
+	padding: 20px;
+	border: none;
+	outline: none;
+	border-radius: 32px;
+	background: #0C21C1;
+	box-shadow: 0px 4px 26px 0px rgba(0, 0, 0, 0.25);
+
+	text-wrap: nowrap;
+	color: #FFF;
+	font-family: Poppins;
+	font-size: 15px;
+	font-weight: 500;
 }
 
 .ErrorSign{
@@ -157,38 +168,13 @@ body{
   margin-top: 1%;
 }
 
-.CreateButton{
-  background-image: url('./images/CreateButton.svg');
-  background-size: cover;
-  border: none;
-  border-radius: 16px;
-  border-color: white;
-  padding: 0;
-  margin-left: 30%;
-  height: 100%;
-  width: 21%;
-}
-.MassCreateButton{
-  background-image: url('./images/Bulk_Certificate.svg');
-  background-size: cover;
-  border: none;
-  border-radius: 16px;
-  border-color: white;
-  padding: 0;
-  height: 100%;
-  width: 44%;
-}
-
 .Table{
   padding-left: 10%;
   margin-top: 3%;
 }
 
 .TableName{
-  /* display: flex; */
   padding-right: 35vw;
-  /* justify-content: center; */
-
 }
 
 .TableCertId{

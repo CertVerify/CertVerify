@@ -51,7 +51,7 @@ function Home_Admin() {
             <div className="PortalText2">Welcome, Rakesh! 👋 </div>
           </div>
           <div className="Admin_Button">
-            <button className="GenButton" onClick={connectWebsite}>
+            <button onClick={connectWebsite} style={{backgroundColor: "#0CC18B"}}>
               {connected ? 'Connected' : 'Connect Wallet'}
             </button>
           </div>
