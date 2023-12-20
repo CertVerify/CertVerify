@@ -15,7 +15,7 @@ function CreateCertficate() {
 		marks1: "",
 		marks2: "",
 		marks3: "",
-		qr: null,
+		// qr: null,
 		photo: null,
 		sign: null,
 	});
@@ -45,7 +45,18 @@ function CreateCertficate() {
 		e.preventDefault();
 		// console.log(name);
 
-		const form_send = { name: user.name, dob: user.dob, roll: user.roll, marks0: user.marks0, marks1: user.marks1, marks2: user.marks2, marks3: user.marks3, qr: user.qr, photo: user.photo, sign: user.sign };
+		const form_send = {
+			name: user.name,
+			dob: user.dob,
+			roll: user.roll,
+			marks0: user.marks0,
+			marks1: user.marks1,
+			marks2: user.marks2,
+			marks3: user.marks3,
+			// qr: user.qr,
+			photo: user.photo,
+			sign: user.sign,
+		};
 		console.log(form_send);
 		const response = await fetch("http://localhost:5000/generateCertificate", {
 			method: "POST",
@@ -65,7 +76,18 @@ function CreateCertficate() {
 		e.preventDefault();
 		// console.log(name);
 
-		const form_send = { name: user.name, dob: user.dob, roll: user.roll, marks0: user.marks0, marks1: user.marks1, marks2: user.marks2, marks3: user.marks3, qr: user.qr, photo: user.photo, sign: user.sign };
+		const form_send = {
+			name: user.name,
+			dob: user.dob,
+			roll: user.roll,
+			marks0: user.marks0,
+			marks1: user.marks1,
+			marks2: user.marks2,
+			marks3: user.marks3,
+			//  qr: user.qr,
+			photo: user.photo,
+			sign: user.sign,
+		};
 		console.log(form_send);
 		const response = await fetch("http://localhost:5000/previewCertificate", {
 			method: "POST",
@@ -189,7 +211,9 @@ function CreateCertficate() {
 					</div>
 				</div> */}
 				<div className="Buttondiv">
-					<button onClick={handlePreview} name="Preview" className="Preview">Preview</button>
+					<button onClick={handlePreview} name="Preview" className="Preview">
+						Preview
+					</button>
 					<button type="Submit" name="Create" className="Create"></button>
 				</div>
 			</form>
