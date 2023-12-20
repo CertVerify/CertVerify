@@ -14,7 +14,7 @@ function Home_Admin_1() {
 						<div className="PortalText2">Welcome, Rakesh! 👋 </div>
 					</div>
 					<div className="Admin_Button">
-						<button>
+						<button onClick={() => window.location.href = "/Create_Certificate"}>
 							<svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<path d="M6.5 1V12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 								<path d="M1 6.5H12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />

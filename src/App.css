@@ -84,6 +84,13 @@ body{
 
 .test{
   width: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.test input {
+	outline: none;
 }
 
 .textft{
@@ -171,7 +178,15 @@ body{
 
 .Table{
   padding-left: 10%;
-  margin-top: 3%;
+  margin-top: 2%;
+  color: #4C4C4C;
+  font-family: "Poppins", Helvetica;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.Table tr {
+	height: 50px;
 }
 
 .TableName{
@@ -179,9 +194,9 @@ body{
 }
 
 .TableCertId{
-  display: flex;
+  /* display: flex; */
   padding-right: 5vw;
-  justify-content: center;
+  /* justify-content: center; */
 }
 
 .gentext{
@@ -223,11 +238,21 @@ body{
   padding-left: 4.65%;
 }
 
-.flexset{
-  flex: 13%;
+.flexset1 .input_wrapper {
+	display: flex;
+	width: 90%;
+	flex-direction: column;
 }
-.flexset2{
-  flex: 87%;
+
+.flexset2 .input_wrapper {
+	display: flex;
+	width: 45%;
+	flex-direction: column;
+}
+
+.flexset1, .flexset2 {
+	display: flex;
+	flex-direction: row;
 }
 
 .datedate{
@@ -257,7 +282,22 @@ body{
   border-radius: 16px;
   border-color: white;
   padding: 0;
-  margin-left: 18%;
+  margin-right: 22%;
   height: 6vw;
-  width: 14%;
+  width: 28%;
+}
+
+.Buttondiv {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-around;
+}
+
+#certificateContainer {
+	width: 40vw;
+	height: calc(40vw * 1.11);
+	margin-top: 5vh;
+	margin-right: 5vw;
+	background-color: #667085;
 }
