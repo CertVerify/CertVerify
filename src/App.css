@@ -301,3 +301,7 @@ body{
 	margin-right: 5vw;
 	background-color: #667085;
 }
+
+#certificateContainer img {
+	width: 40vw;
+}
