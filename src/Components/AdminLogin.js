@@ -33,7 +33,7 @@ export default function Register() {
           <div className={"leftFrame"}>
             <div className={"leftBox"}>
               <h1 className={"title"}>Admin Login</h1>
-              <form className={"mobileNumber"}>
+              <form className={"mobileNumber"} onSubmit={(e) => {e.preventDefault(); window.location.href="/Admin"}}>
                 <label className={"label"}>User Id</label>
                 <div className={"input"}>
                   <svg
@@ -118,7 +118,7 @@ export default function Register() {
                   <input type="checkbox" name="remember" />
                   &nbsp;&nbsp;Remember me
                 </label>
-                <button href="#" className={"loginButton"}>
+                <button type="submit" href="/Admin" className={"loginButton"}>
                   Login
                 </button>
               </form>

@@ -146,6 +146,7 @@ const cors = require("cors");
 const Jimp = require("jimp");
 const bodyParser = require("body-parser");
 const multer = require("multer");
+const QRCode = require('qrcode');
 
 const app = express();
 const port = 5000;
@@ -254,22 +255,35 @@ app.post("/uploadImage", upload.single("image"), async (req, res) => {
   }
 });
 
+const GenerateQr = async text =>{
+  try{
+    const QR = await QRCode.toDataURL(text);
+    return QR;
+  }
+  catch(err){
+    console.error(err);
+  }
+}
+
 app.post("/generateCertificate", async (req, res) => {
+  const  p = Math.floor(1000 + (Math.random())*9000);
   try {
     const { name, dob, marks0, marks1, marks2, marks3, photo, sign } =
-      req.body;
-
+    req.body;
+    
+    const qr = await GenerateQr("localhost:3001/verify?certid=" + p + "&dob=" + dob);
+    
     const image = await Jimp.read("./Marksheet.png");
-    // const qr_ = await Jimp.read(
-    //   Buffer.from(qr.replace(/^data:image\/png;base64,/, ""), "base64")
-    // );
+    const qr_ = await Jimp.read(
+      Buffer.from(qr.replace(/^data:image\/(jpeg|png|jpg);base64,/, ""), "base64")
+    );
     const photo_ = await Jimp.read(
-      Buffer.from(photo.replace(/^data:image\/jpeg;base64,/, ""), "base64")
-    );
-    const sign_ = await Jimp.read(
-      Buffer.from(sign.replace(/^data:image\/jpeg;base64,/, ""), "base64")
-    );
-
+      Buffer.from(photo.replace(/^data:image\/(jpeg|png|jpg);base64,/, ""), "base64")
+      );
+      const sign_ = await Jimp.read(
+        Buffer.from(sign.replace(/^data:image\/(jpeg|png|jpg);base64,/, ""), "base64")
+        );
+        
     const font1 = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
     const font2 = await Jimp.loadFont(Jimp.FONT_SANS_64_BLACK);
     image.print(font1, 420, 636, name);
@@ -283,32 +297,33 @@ app.post("/generateCertificate", async (req, res) => {
         month: "numeric",
         day: "numeric",
       })
-    );
-    image.print(font2, 233 * 4, 271 * 4, marks0);
-    image.print(font2, 233 * 4, 302 * 4, marks1);
-    image.print(font2, 233 * 4, 332 * 4, marks2);
-    image.print(font2, 233 * 4, 362 * 4, marks3);
-
-    if (marks0 > 80) {
-      image.print(font2, 1640, 271 * 4, "Excellent");
-    } else if (marks0 > 60) {
-      image.print(font2, 1620, 271 * 4, "Very Good");
-    } else if (marks0 > 30) {
-      image.print(font2, 413 * 4, 271 * 4, "Average");
-    } else {
-      image.print(font2, 1700, 271 * 4, "Fail");
-    }
-
-    if (marks1 > 80) {
-      image.print(font2, 1640, 302 * 4, "Excellent");
-    } else if (marks1 > 60) {
+      );
+      image.print(font1,1890,310, p);
+      image.print(font2, 233 * 4, 271 * 4, marks0);
+      image.print(font2, 233 * 4, 302 * 4, marks1);
+      image.print(font2, 233 * 4, 332 * 4, marks2);
+      image.print(font2, 233 * 4, 362 * 4, marks3);
+      
+      if (marks0 > 80) {
+        image.print(font2, 1640, 271 * 4, "Excellent");
+      } else if (marks0 > 60) {
+        image.print(font2, 1620, 271 * 4, "Very Good");
+      } else if (marks0 > 30) {
+        image.print(font2, 413 * 4, 271 * 4, "Average");
+      } else {
+        image.print(font2, 1700, 271 * 4, "Fail");
+      }
+      
+      if (marks1 > 80) {
+        image.print(font2, 1640, 302 * 4, "Excellent");
+      } else if (marks1 > 60) {
       image.print(font2, 1620, 302 * 4, "Very Good");
     } else if (marks1 > 30) {
       image.print(font2, 413 * 4, 302 * 4, "Average");
     } else {
       image.print(font2, 1700, 302 * 4, "Fail");
     }
-
+    
     if (marks2 > 80) {
       image.print(font2, 1640, 332 * 4, "Excellent");
     } else if (marks2 > 60) {
@@ -330,21 +345,21 @@ app.post("/generateCertificate", async (req, res) => {
     }
     const ch = parseInt(marks0) + parseInt(marks1) + parseInt(marks2) +parseInt( marks3);
     if(ch<120){
-        image.print(font2,473*4,435*4, 'Fail');
+      image.print(font2,473*4,435*4, 'Fail');
     }
     else{
-        image.print(font2,473*4,435*4, 'Pass');
+      image.print(font2,473*4,435*4, 'Pass');
     }
     sign_.resize(80 * 4, 50 * 4);
     photo_.resize(80 * 4, 80 * 4);
-    // qr_.resize(65 * 4, 65 * 4);
+    qr_.resize(65 * 4, 65 * 4);
     image.blit(photo_, 418 * 4, 130 * 4);
     image.blit(sign_, 413 * 4, 520 * 4);
-    // image.blit(qr_, 83 * 4, 506 * 4);
-
+    image.blit(qr_, 83 * 4, 506 * 4);
+    
     await image.writeAsync("./export/certificate.png");
     pinFileToIPFS();
-	updateMongo();
+    updateMongo();
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
@@ -352,18 +367,22 @@ app.post("/generateCertificate", async (req, res) => {
 });
 app.post("/previewCertificate", async (req, res) => {
   try {
+    
+    const  p = Math.floor(1000 + (Math.random())*9000);
     const { name, dob, marks0, marks1, marks2, marks3, photo, sign } =
-      req.body;
+    req.body;
+
+    const qr = await GenerateQr("localhost:3001/verify?certid=" + p + "&dob=" + dob);
 
     const image = await Jimp.read("./Marksheet.png");
-    // const qr_ = await Jimp.read(
-    //   Buffer.from(qr.replace(/^data:image\/png;base64,/, ""), "base64")
-    // );
+    const qr_ = await Jimp.read(
+      Buffer.from(qr.replace(/^data:image\/(jpeg|png|jpg);base64,/, ""), "base64")
+    );
     const photo_ = await Jimp.read(
-      Buffer.from(photo.replace(/^data:image\/jpeg;base64,/, ""), "base64")
+      Buffer.from(photo.replace(/^data:image\/(jpeg|png|jpg);base64,/, ""), "base64")
     );
     const sign_ = await Jimp.read(
-      Buffer.from(sign.replace(/^data:image\/jpeg;base64,/, ""), "base64")
+      Buffer.from(sign.replace(/^data:image\/(jpeg|png|jpg);base64,/, ""), "base64")
     );
 
     const font1 = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
@@ -380,6 +399,7 @@ app.post("/previewCertificate", async (req, res) => {
         day: "numeric",
       })
     );
+    image.print(font1,1890,310, p);
     image.print(font2, 233 * 4, 271 * 4, marks0);
     image.print(font2, 233 * 4, 302 * 4, marks1);
     image.print(font2, 233 * 4, 332 * 4, marks2);
@@ -433,10 +453,10 @@ app.post("/previewCertificate", async (req, res) => {
     }
     sign_.resize(80 * 4, 50 * 4);
     photo_.resize(80 * 4, 80 * 4);
-    // qr_.resize(65 * 4, 65 * 4);
+    qr_.resize(65 * 4, 65 * 4);
     image.blit(photo_, 418 * 4, 130 * 4);
     image.blit(sign_, 413 * 4, 520 * 4);
-    // image.blit(qr_, 83 * 4, 506 * 4);
+    image.blit(qr_, 83 * 4, 506 * 4);
     const certificateBuffer = await image.getBufferAsync(Jimp.MIME_PNG);
     res.json({ success: true, certificate: certificateBuffer.toString('base64') });
   } catch (error) {
