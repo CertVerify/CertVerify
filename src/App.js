@@ -10,6 +10,7 @@ import {
   Route,
 } from "react-router-dom";
 import Register from './Components/AdminLogin';
+import Upload_from_excel from './Components/Upload_from_excel';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/Admin" element = {<Home_Admin />}  />
           <Route path="/Admin_Connected" element = {<Home_Admin_1 />}  />
           <Route path="/Create_Certificate" element = {<CreateCertficate />}  />
+          <Route path="/Upload_from_excel" element = {<Upload_from_excel />}  />
 
         </Routes>
     </div>

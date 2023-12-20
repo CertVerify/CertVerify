@@ -80,6 +80,44 @@ async function updateMongo(hashID, p, dob) {
     await client.close();
   }
 }
+
+async function deleteMongo(certID) {
+	try {
+	  await client.connect();
+	  const cooll = client.db("CertVerify").collection("institutes");
+	  // for await (const doc of cooll.find({ userID: "ritRandom" })) {
+	  // 	console.log(doc);
+	  // }
+	  await cooll.updateMany(
+		{ userID: "ritRandom" },
+		{
+		  $pull: {
+			certificates: {
+			  certificateID: certID,
+			},
+		  },
+		},
+		{}
+	  );
+	  const cooll2 = client.db("CertVerify").collection("users");
+	  await cooll2.updateMany(
+		{ uuid: "123456789012" },
+		{
+		  $pull: {
+			certificates: {
+			  certificateID: certID,
+			},
+		  },
+		},
+		{}
+	  );
+	  console.log(
+		"Pinged your deployment. You successfully connected to MongoDB!"
+	  );
+	} finally {
+	  await client.close();
+	}
+  }
 // updateMongo().catch(console.dir);
 
 // const express = require('express');
@@ -170,6 +208,10 @@ const fs = require("fs");
 
 app.get("/getCertsInsti", async (req, res) => {
   readMongo(req, res);
+});
+
+app.post("/deleteCertsInsti", async (req, res) => {
+  deleteMongo(req.body.certID);
 });
 
 app.post("/upload", async (req, res) => {
