@@ -177,7 +177,7 @@ body{
 }
 
 .Table{
-  padding-left: 10%;
+  padding: 0 2.5%;
   margin-top: 2%;
   color: #4C4C4C;
   font-family: "Poppins", Helvetica;
@@ -187,6 +187,10 @@ body{
 
 .Table tr {
 	height: 50px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .TableName{
