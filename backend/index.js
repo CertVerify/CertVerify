@@ -256,13 +256,13 @@ app.post("/uploadImage", upload.single("image"), async (req, res) => {
 
 app.post("/generateCertificate", async (req, res) => {
   try {
-    const { name, dob, marks0, marks1, marks2, marks3, qr, photo, sign } =
+    const { name, dob, marks0, marks1, marks2, marks3, photo, sign } =
       req.body;
 
     const image = await Jimp.read("./Marksheet.png");
-    const qr_ = await Jimp.read(
-      Buffer.from(qr.replace(/^data:image\/png;base64,/, ""), "base64")
-    );
+    // const qr_ = await Jimp.read(
+    //   Buffer.from(qr.replace(/^data:image\/png;base64,/, ""), "base64")
+    // );
     const photo_ = await Jimp.read(
       Buffer.from(photo.replace(/^data:image\/jpeg;base64,/, ""), "base64")
     );
@@ -337,10 +337,10 @@ app.post("/generateCertificate", async (req, res) => {
     }
     sign_.resize(80 * 4, 50 * 4);
     photo_.resize(80 * 4, 80 * 4);
-    qr_.resize(65 * 4, 65 * 4);
+    // qr_.resize(65 * 4, 65 * 4);
     image.blit(photo_, 418 * 4, 130 * 4);
     image.blit(sign_, 413 * 4, 520 * 4);
-    image.blit(qr_, 83 * 4, 506 * 4);
+    // image.blit(qr_, 83 * 4, 506 * 4);
 
     await image.writeAsync("./export/certificate.png");
     pinFileToIPFS();
@@ -352,13 +352,13 @@ app.post("/generateCertificate", async (req, res) => {
 });
 app.post("/previewCertificate", async (req, res) => {
   try {
-    const { name, dob, marks0, marks1, marks2, marks3, qr, photo, sign } =
+    const { name, dob, marks0, marks1, marks2, marks3, photo, sign } =
       req.body;
 
     const image = await Jimp.read("./Marksheet.png");
-    const qr_ = await Jimp.read(
-      Buffer.from(qr.replace(/^data:image\/png;base64,/, ""), "base64")
-    );
+    // const qr_ = await Jimp.read(
+    //   Buffer.from(qr.replace(/^data:image\/png;base64,/, ""), "base64")
+    // );
     const photo_ = await Jimp.read(
       Buffer.from(photo.replace(/^data:image\/jpeg;base64,/, ""), "base64")
     );
@@ -433,11 +433,11 @@ app.post("/previewCertificate", async (req, res) => {
     }
     sign_.resize(80 * 4, 50 * 4);
     photo_.resize(80 * 4, 80 * 4);
-    qr_.resize(65 * 4, 65 * 4);
+    // qr_.resize(65 * 4, 65 * 4);
     image.blit(photo_, 418 * 4, 130 * 4);
     image.blit(sign_, 413 * 4, 520 * 4);
-    image.blit(qr_, 83 * 4, 506 * 4);
-
+    // image.blit(qr_, 83 * 4, 506 * 4);
+    const certificateBuffer = await image.getBufferAsync(Jimp.MIME_PNG);
     res.json({ success: true, certificate: certificateBuffer.toString('base64') });
   } catch (error) {
     console.error(error);
