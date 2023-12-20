@@ -33,7 +33,7 @@ async function readMongo(req, res) {
   }
 }
 
-async function updateMongo(hashID, p) {
+async function updateMongo(hashID, p, dob) {
   try {
     await client.connect();
     const cooll = client.db("CertVerify").collection("institutes");
@@ -61,6 +61,7 @@ async function updateMongo(hashID, p) {
         $push: {
           certificates: {
             date: "2 Apr, 2029",
+			dob: dob,
             hashID: hashID,
             issuer: "RIT, Random",
             name: "MTech - 2029",
@@ -279,7 +280,7 @@ app.post("/generateCertificate", async (req, res) => {
     const { name, dob, marks0, marks1, marks2, marks3, photo, sign } = req.body;
 
     const qr = await GenerateQr(
-      "localhost:3001/verify?certid=" + p + "&dob=" + dob
+      "172.17.182.48:3000/verify?certid=" + p + "&dob=" + dob
     );
 
     const image = await Jimp.read("./Marksheet.png");
@@ -377,7 +378,7 @@ app.post("/generateCertificate", async (req, res) => {
 
     await image.writeAsync("./export/certificate.png");
     const hashID = await pinFileToIPFS();
-    updateMongo(hashID, p);
+    updateMongo(hashID, p, dob);
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
