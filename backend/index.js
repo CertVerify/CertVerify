@@ -280,7 +280,7 @@ app.post("/generateCertificate", async (req, res) => {
     const { name, dob, marks0, marks1, marks2, marks3, photo, sign } = req.body;
 
     const qr = await GenerateQr(
-      "172.17.182.48:3000/verify?certid=" + p + "&dob=" + dob
+      "192.168.85.69:3000/verify?certid=" + p + "&dob=" + dob
     );
 
     const image = await Jimp.read("./Marksheet.png");
@@ -390,7 +390,7 @@ app.post("/previewCertificate", async (req, res) => {
     const { name, dob, marks0, marks1, marks2, marks3, photo, sign } = req.body;
 
     const qr = await GenerateQr(
-      "localhost:3001/verify?certid=" + p + "&dob=" + dob
+      "Preview Only"
     );
 
     const image = await Jimp.read("./Marksheet.png");
