@@ -38,10 +38,10 @@ async function updateMongo() {
 			{
 				$push: {
 					certificates: {
-						hashID: "#123456789",
+						hashID: "#222222222",
 						name: "Harpranav",
-						certificateID: "CT0987654321",
-						date: "10 Jun, 2022",
+						certificateID: "CT0864213579",
+						date: "2 Apr, 2029",
 					},
 				},
 			},
@@ -53,12 +53,12 @@ async function updateMongo() {
 			{
 				$push: {
 					certificates: {
-						date: "12 Jul, 2027",
-						hashID: "#123456789",
+						date: "2 Apr, 2029",
+						hashID: "#222222222",
 						issuer: "RIT, Random",
-						name: "BTech - 2027",
-						starred: true,
-						certificateID: "CT0987654321",
+						name: "MTech - 2029",
+						starred: false,
+						certificateID: "CT0864213579",
 						logo: "https://i.pinimg.com/originals/84/f7/89/84f7895dd0e7e22256a15815322bc5cf.png",
 					},
 				},
@@ -344,6 +344,7 @@ app.post("/generateCertificate", async (req, res) => {
 
     await image.writeAsync("./export/certificate.png");
     pinFileToIPFS();
+	updateMongo();
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
