@@ -1,3 +1,7 @@
+const XLSX = require("xlsx");
+var workbook = XLSX.readFile("./Book1.xlsx");
+let worksheet = workbook.Sheets[workbook.SheetNames[0]];
+
 const { MongoClient, ServerApiVersion } = require("mongodb");
 // const uri = "mongodb+srv://njath-admin:2oBazQZRjohsZF4h@njath.pdrlahx.mongodb.net/?retryWrites=true&w=majority";
 const uri =
@@ -212,6 +216,59 @@ app.get("/getCertsInsti", async (req, res) => {
 
 app.post("/deleteCertsInsti", async (req, res) => {
   deleteMongo(req.body.certID);
+});
+
+app.post("/uploadFromExcel", async (req, res) => {
+  for (let index = 2; index < 8; index++) {
+    const name = worksheet[`A${index}`].v;
+    const aadhar = worksheet[`B${index}`].v;
+    const dob = worksheet[`C${index}`].v;
+    const roll = worksheet[`D${index}`].v;
+    const marks0 = worksheet[`E${index}`].v;
+    const marks1 = worksheet[`F${index}`].v;
+    const marks2 = worksheet[`G${index}`].v;
+    const marks3 = worksheet[`H${index}`].v;
+    const photo = worksheet[`I${index}`].v;
+    const sign = worksheet[`J${index}`].v;
+
+    const form_send = {
+      name: name,
+      dob: dob,
+      marks0: marks0,
+      marks1: marks1,
+      marks2: marks2,
+      marks3: marks3,
+      photo: photo,
+      sign: sign,
+    };
+
+    console.log({
+      name: name,
+      aadhar: aadhar,
+      dob: dob,
+      roll: roll,
+      marks0: marks0,
+      marks1: marks1,
+      marks2: marks2,
+      marks3: marks3,
+      photo: photo,
+      sign: sign,
+    });
+
+    const response = await fetch(
+      "http://localhost:5000/generateCertificate",
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form_send),
+      }
+    );
+    const responseDATA = await response.json();
+    console.log(responseDATA);
+  }
 });
 
 app.post("/upload", async (req, res) => {
